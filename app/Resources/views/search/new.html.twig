@@ -1,3 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="nav-bar">
+        <h1 class="title">Address Book - Search</h1>
+        <div class="inner-nav-bar">
+            <a href="{{ path('app_default_new') }}">New</a>
+            <a href="{{ path('homepage') }}">Home</a>
+        </div>
+    </div>
+    <div class="new-form">
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
+    </div>
+
+{% endblock %}

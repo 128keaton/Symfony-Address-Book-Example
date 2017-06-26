@@ -114,14 +114,14 @@ class DefaultController extends Controller
         if ($form->isSubmitted()) {
             $searchTerm = $form["searchTerm"]->getData();
             $repository = $em->getRepository('AppBundle:Person');
-            $result = $repository->createQueryBuilder('person')
+            $query = $repository->createQueryBuilder('person')
                 ->select('m')
                 ->from('AppBundle:Person', 'm')
                 ->andWhere('MATCH_AGAINST (m.firstName, m.lastName, m.phoneNumber, :field) > 0')
-                ->setParameter('field', $searchTerm)
+                ->setParameter('field', '%' . $searchTerm . '%')
                 ->getQuery()
                 ->getResult();
-            return $this->render('default/index.html.twig', array('myArray' => $result));
+            return $this->render('default/index.html.twig', array('myArray' => $query));
         }
         return $this->render('search/new.html.twig', array(
             'form' => $form->createView(),
