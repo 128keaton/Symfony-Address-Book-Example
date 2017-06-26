@@ -1,0 +1,17 @@
+-   name: Install Composer
+    become: yes
+    shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer warn=no
+    
+-   name: Install global composer repos
+    composer:
+        command: require
+        arguments: "{{ item }}"
+        working_dir: "/home/{{ user }}/.config/composer"
+    with_items: "{{ global_composer_packages }}"
+        
+-   name: Add composer to path
+    lineinfile:
+        dest: "~/.bash_profile"
+        create: yes
+        regexp: "export PATH=$PATH:/home/{{ user }}/.config/composer/vendor/bin"
+        line: "export PATH=$PATH:/home/{{ user }}/.config/composer/vendor/bin"

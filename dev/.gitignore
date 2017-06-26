@@ -1,0 +1,5 @@
+playbook.retry
+playbook.yml
+ansible/lamp/vars/dev.yml
+ansible/lamp/vars/prod.yml
+.data/

@@ -1,0 +1,41 @@
+-   name: Install Vim and packages
+    become: yes
+    apt: pkg={{ item }} state=latest
+    with_items:
+        - vim
+        - exuberant-ctags
+      
+-   file: path=/home/vagrant/.vim/bundle state=directory
+    become: yes
+    become_user: vagrant
+  
+-   name: Install Vundle
+    become: yes
+    become_user: vagrant
+    command: git clone https://github.com/gmarik/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
+    args:
+        creates: /home/vagrant/.vim/bundle/Vundle.vim
+      
+-   stat: path=/home/vagrant/.vimrc
+    become: yes
+    become_user: vagrant
+    register: vimrc
+  
+-   name: Create vimrc
+    become: yes
+    become_user: vagrant
+    template: src=vimrc.tpl dest=/home/vagrant/.vimrc
+    when: not vimrc.stat.exists      
+
+-   name: Install Vim Bundles
+    become: yes
+    become_user: vagrant
+    command: vim +PluginInstall +qall
+  
+-   name: Build vimproc
+    command: make
+    become: yes
+    become_user: vagrant
+    args:
+        chdir: /home/vagrant/.vim/bundle/vimproc
+      

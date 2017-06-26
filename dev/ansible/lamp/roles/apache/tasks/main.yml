@@ -1,0 +1,96 @@
+-   name: Add apache2 Repository
+    become: yes
+    apt_repository: repo=ppa:ondrej/apache2
+    
+-   name: Update apt
+    become: yes
+    apt: update_cache=yes
+  
+-   name: Install Apache
+    become: yes
+    apt: pkg=apache2 state=latest
+
+-   name: Install Apache Modules
+    become: yes
+    apache2_module: state=present name="{{ item }}"
+    notify: restart apache
+    with_items:
+        - rewrite
+        - vhost_alias
+        - headers
+        - expires
+        - filter
+        - ssl
+        
+-   name: Add user to www-data
+    when: enviroment == "prod"
+    become: yes
+    user: name="{{ user }}" group="www-data", append=yes
+
+-   name: Change default apache2.4 site
+    become: yes
+    template: src=vhost24.conf.tpl dest=/etc/apache2/sites-available/{{ ws_vhost_file }}.conf
+    notify: restart apache
+  
+-   name: Disable default site
+    become: yes
+    command: a2dissite 000-default.conf
+    notify: restart apache
+  
+-   name: Change owner of apache lib files
+    become: yes
+    when: enviroment == "dev"
+    file: path=/var/lib/apache2/ owner={{ user }} recurse=yes
+    
+-   name: Enable site
+    become: yes
+    command: a2ensite "{{ ws_vhost_file }}"
+    notify: restart apache
+    
+-   name: Change apache user to "{{ user }}"
+    notify: restart apache
+    become: yes
+    when: enviroment == 'dev'
+    lineinfile: dest=/etc/apache2/envvars
+                regexp='export APACHE_RUN_USER=www-data'
+                line='export APACHE_RUN_USER={{ user }}'
+                
+-   name: Change apache group to {{ user }}
+    become: yes
+    when: enviroment == 'dev'
+    lineinfile: dest=/etc/apache2/envvars
+                regexp='export APACHE_RUN_GROUP=www-data'
+                line='export APACHE_RUN_GROUP={{ user }}'
+    notify: restart apache
+        
+-   name: Create SSL key folder
+    become: yes
+    file: path="/etc/apache2/ssl"
+          state="directory"
+          owner="root"
+    
+-   name: Generate SSL Key
+    become: yes
+    when: enviroment == 'dev'
+    command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/{{server_name}}.key -out /etc/apache2/ssl/{{server_name}}.crt -subj '/CN={{server_name}}/O=Vagrant VM/C=US'
+    notify: restart apache
+    args:
+        creates: "/etc/apache2/ssl/{{server_name}}.key"
+
+-   name: Get mod_pagespeed
+    get_url: url=https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb
+             dest=/tmp/pagespeed.deb
+             
+-   name: Install mod_pagespeed
+    become: yes
+    apt: deb=/tmp/pagespeed.deb
+     
+-   name: Fix pagespeed cache permissions
+    when: enviroment == 'dev'
+    become: yes
+    file: path=/var/cache/mod_pagespeed owner="{{ user }}" recurse=yes
+    
+-   name: Fix pagespeed log permissions
+    when: enviroment == 'dev'
+    become: yes
+    file: path=/var/log/pagespeed owner="{{ user }}" recurse=yes

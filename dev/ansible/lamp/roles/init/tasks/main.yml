@@ -1,0 +1,44 @@
+-   name: Add php Repository
+    become: yes
+    apt_repository: repo=ppa:ondrej/php
+    
+-   name: Update apt
+    become: yes
+    apt: update_cache=yes
+  
+-   name: Install aptitude
+    command: apt-get install aptitude --yes warn=no
+    become: yes
+  
+-   name: Upgrade OS
+    become: yes
+    apt: upgrade=yes
+
+-   name: Install System Packages
+    become: yes
+    apt: pkg="{{ item }}" state=latest
+    with_items:
+        - curl
+        - wget
+        - nano
+        - python-software-properties
+
+-   name: Install Extra Packages
+    become: yes
+    apt: pkg='{{ item }}' state=latest
+    with_items: '{{ sys_packages + extra_sys_packages }}'
+
+-   name: Configure the timezone
+    become: yes
+    template: src=timezone.tpl dest=/etc/timezone
+
+-   name: More Configure the timezone
+    become: yes
+    file: src="/usr/share/zoneinfo/{{timezone}}" dest=/etc/localtime state=link force=yes backup=yes
+
+-   name: add hostname to hosts file
+    become: yes
+    lineinfile: dest=/etc/hosts line='::1   {{ server_name }}'
+
+
+  

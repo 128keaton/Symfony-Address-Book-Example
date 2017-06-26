@@ -1,0 +1,64 @@
+php_version: 7.0
+sys_packages: [
+    "git",
+    "nodejs",
+    "npm"
+]
+php_versioned_packages: [
+    "zip",
+    "xml",
+    "gd",
+    "mbstring",
+    "curl",
+    "intl",
+    "mcrypt",
+    "mysql"
+]
+php_extra_versioned_packages: []
+global_composer_packages: [
+  "phpunit/phpunit",
+  "squizlabs/php_codesniffer",
+  "phpmd/phpmd",
+  "friendsofphp/php-cs-fixer",
+  "deployer/deployer",
+  "endouble/symfony3-custom-coding-standard",
+]
+php_other_packages: [
+    "php-pear",
+    "php-xdebug",
+    "php-imagick"
+]
+wkhtmltopdf_version: 0.12.4
+ws_vhost_file: default
+user: vagrant
+jackrabbit_ver: 2.10.1
+jackrabbit_port: 8080
+php_ini_settings: [
+    { reg: 'date.timezone =', line: 'date.timezone = {{ timezone }}' },
+    { reg: 'max_execution_time =', line: 'max_execution_time = 0' },
+    { reg: 'xdebug.max_nesting_level =', line: 'xdebug.max_nesting_level = {{ max_nesting_level }}' },
+    { reg: 'memory_limit =', line: 'memory_limit = {{ memory_limit }}' },
+    { reg: 'display_errors =', line: 'display_errors = false' },
+    { reg: 'display_startup_errors =', line: 'display_startup_errors = false' },
+    { reg: 'error_reporting =', line: 'error_reporting = E_ALL' },
+    { reg: 'session.gc_maxlifetime =', line: 'session.gc_maxlifetime = 3600' },
+    { reg: 'xdebug.remote_enable =', line: 'xdebug.remote_enable = 1' },
+    { reg: 'xdebug.remote_handler =', line: 'xdebug.remote_handler = dbgp' },
+    { reg: 'xdebug.remote_mode =', line: 'xdebug.remote_mode = req' },
+    { reg: 'xdebug.remote_host =', line: 'xdebug.remote_host = {{ xdebug_ip }}' },
+    { reg: 'xdebug.remote_port =', line: 'xdebug.remote_port = 9000' },
+    { reg: 'xdebug.profiler_enable =', line: 'xdebug.profiler_enable = 0' },
+    { reg: 'xdebug.profiler_enable_trigger =', line: 'xdebug.profiler_enable_trigger = 1' },
+    { reg: 'xdebug.profiler_output_dir =', line: 'xdebug.profiler_output_dir = /vagrant/profiles' }
+]
+enviroment: 'dev'
+doc_root: "/vagrant/web"
+database_name: 'database'
+database_user: 'root'
+database_password: 'password'
+extra_sys_packages: []
+wkhtmltopdf_url: "http://download.gna.org/wkhtmltopdf/0.12/{{ wkhtmltopdf_version }}/wkhtmltox-{{ wkhtmltopdf_version }}_linux-generic-amd64.tar.xz"
+web_server: apachephp
+timezone: America/Phoenix
+max_nesting_level: 300
+memory_limit: 512M

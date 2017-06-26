@@ -1,0 +1,12 @@
+-   name: "Install php{{ php_version }}"
+    become: yes
+    apt: pkg="php{{ php_version }}" state=latest
+
+-   name: Setup php.ini
+    become: yes
+    lineinfile: dest="/etc/php/{{ php_version }}/apache2/conf.d/99-overrides.ini"
+                regexp="{{ item.reg }}"
+                line="{{ item.line }}"
+                create=yes
+    with_items: "{{ php_ini_settings }}"
+    

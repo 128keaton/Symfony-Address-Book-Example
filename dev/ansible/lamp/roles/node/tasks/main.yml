@@ -1,0 +1,14 @@
+-   name: Install node and npm
+    become: yes
+    apt: pkg="{{ item }}" state=latest
+    with_items:
+        - nodejs
+        - npm
+
+-   name: link nodejs to node 
+    become: yes
+    file: src=/usr/bin/nodejs dest=/usr/bin/node state=link force=yes
+  
+-   name: install uglify css/js and less
+    become: yes
+    command: npm install -g uglifycss uglify-js less

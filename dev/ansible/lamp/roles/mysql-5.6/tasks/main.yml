@@ -1,0 +1,28 @@
+-   name: Add mysql 5.6 repo
+    become: yes
+    apt_repository:
+      repo: deb http://archive.ubuntu.com/ubuntu trusty universe
+      state: present
+
+-   name: Update apt
+    become: yes
+    apt: update_cache=yes
+
+-   name: Debconf for MySQL
+    debconf: name=mysql-server-5.6 question="{{ item.question }}" value="{{ item.value }}" vtype="{{ item.vtype }}"
+    become: yes
+    with_items:
+        - { question: "mysql-server/root_password", value: "{{ database_password }}", vtype: "password"}
+        - { question: "mysql-server/root_password_again", value: "{{ database_password }}", vtype: "password"}
+
+-   name: Install MySQL Packages
+    become: yes
+    apt: pkg="{{ item }}" state=latest force=yes
+    with_items:
+        - mysql-server-5.6
+        - mysql-client-5.6
+        - python-mysqldb
+
+-   name: Start mysql
+    become: yes
+    service: name=mysql enabled=yes state=started

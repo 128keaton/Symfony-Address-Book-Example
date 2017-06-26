@@ -1,0 +1,16 @@
+- hosts: all
+  vars_files:
+    - [ "vars/default.dist.yml" ]
+    - [ "vars/{{ enviroment }}.yml", "vars/common.yml" ]
+  roles:
+    - init
+    - apache
+    - php
+    - php-cli
+    - php-fpm
+    - php-common
+    - { role: mysql-5.6, when: "enviroment == 'dev' or enviroment == 'test'" }
+    - { role: mysql-common, when: "enviroment == 'dev' or enviroment == 'test'" }
+    - composer
+    - node
+    - bash

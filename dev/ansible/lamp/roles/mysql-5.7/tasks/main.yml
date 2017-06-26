@@ -1,0 +1,14 @@
+-   name: Debconf for MySQL
+    debconf: name=mysql-server-5.7 question="{{ item.question }}" value="{{ item.value }}" vtype="{{ item.vtype }}"
+    become: yes
+    with_items:
+        - { question: "mysql-server/root_password", value: "{{ database_password }}", vtype: "password"}
+        - { question: "mysql-server/root_password_again", value: "{{ database_password }}", vtype: "password"}
+
+-   name: Install MySQL Packages
+    become: yes
+    apt: pkg="{{ item }}" state=latest force=yes
+    with_items:
+        - mysql-server-5.7
+        - mysql-client-5.7
+        - python-mysqldb

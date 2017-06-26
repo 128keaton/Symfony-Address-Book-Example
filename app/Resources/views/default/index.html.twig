@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="nav-bar">
+    <h1 class="title">Address Book</h1>
+    <div class="inner-nav-bar">
+        <a href="{{ path('app_default_new') }}">New Person</a>
+        <a href="{{ path('app_default_search') }}">Search</a>
+    </div>
+</div>
+<table> 
+    <tr>
+        <th>Name:</th>
+        <th>Phone Number:</th>
+    </tr>
+        {% for person in myArray %}
+            <tr>
+                <td class="name">{{ person.firstName }} {{ person.lastName }}</td>
+                <td class="phone">{{ person.phoneNumber }}</td>
+                <td class="delete"><a href="{{ path('person_destroy') }}" {{ delete_link(person) }}>Delete</a></td>
+                <td class="edit"><a href="{{ path('person_edit', {'id':  person.id  }) }}">Edit</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

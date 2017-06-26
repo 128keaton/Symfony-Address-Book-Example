@@ -1,0 +1,12 @@
+
+-   name: Create databases
+    become: yes
+    ignore_errors: yes
+    mysql_db: name="{{ database_name }}" state=present login_user=root login_password="{{ database_password }}"
+    with_items: mysql
+
+-   name: Create users
+    become: yes
+    ignore_errors: yes
+    mysql_user: name="{{ database_user }}" password="{{ database_password }}" priv="{{ database_name }}.*:ALL" state=present login_user=root login_password="{{ database_password }}"
+    with_items: mysql

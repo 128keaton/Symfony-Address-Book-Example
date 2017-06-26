@@ -1,0 +1,14 @@
+-   name: Install PHP Packages
+    become: yes
+    apt: pkg="php{{ php_version}}-{{ item }}" state=latest
+    with_items: '{{ php_versioned_packages + php_extra_versioned_packages }}'
+
+-   name: Install non-versioned PHP Packages
+    become: yes
+    apt: pkg="{{ item }}" state=latest
+    with_items: '{{ php_other_packages }}'
+      
+-   name: Remove xdebug from CLI
+    become: yes
+    ignore_errors: yes
+    file: path=/etc/php/{{ php_version }}/cli/conf.d/20-xdebug.ini state=absent force=yes

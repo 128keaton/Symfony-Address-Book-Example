@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        <link href="{{ asset('css/page.css') }}" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ asset('js/delete-helper.js') }}"></script>
+    </body>
+</html>
