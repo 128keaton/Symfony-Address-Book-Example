@@ -66,13 +66,13 @@ class DefaultController extends Controller
         $form = $this->createForm(PersonType::class, $person);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             return $this->redirectToRoute('homepage');
         }
 
         return $this->render(
-            'new/create.html.twig',
+            'edit/index.html.twig',
             array('form' => $form->createView())
         );
     }

@@ -1,6 +1,22 @@
-{{ form_start(form) }}
-    {{ form_row(form.firstName) }}
-    {{ form_row(form.lastName) }}
-    {{ form_row(form.phoneNumber) }}
-    <button type="submit">Create</button>
-{{ form_end(form) }}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nav-bar">
+        <h1 class="title">Address Book</h1>
+        <div class="inner-nav-bar">
+            <a href="{{ path('app_default_new') }}">New</a>
+            <a href="{{ path('homepage') }}">Home</a>
+            <a href="{{ path('app_default_search') }}">Search</a>
+        </div>
+    </div>
+    <div class="new-form">
+        {{ form_start(form) }}
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.phoneNumber) }}
+
+        <button type="submit">Done</button>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

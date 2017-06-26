@@ -3,7 +3,9 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
-        <link href="{{ asset('css/page.css') }}" rel="stylesheet" type="text/css"/>
+        {% stylesheets 'bundles/app/css/*' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
     </head>
     <body>
         {% block body %}{% endblock %}
