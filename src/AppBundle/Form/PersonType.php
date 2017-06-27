@@ -6,6 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use libphonenumber\PhoneNumberFormat;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+
 
 class PersonType extends AbstractType
 {
@@ -14,7 +17,7 @@ class PersonType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('firstName', TextType::class, array('required' => true))->add('lastName', TextType::class, array('required' => true))->add('phoneNumber');
+        $builder->add('firstName', TextType::class, array('required' => true))->add('lastName', TextType::class, array('required' => true))->add('phoneNumber', PhoneNumberType::class,  array('default_region' => 'US'));
     }
     
     /**

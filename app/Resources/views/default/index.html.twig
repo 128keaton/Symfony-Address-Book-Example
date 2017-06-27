@@ -20,7 +20,7 @@
     {% for person in myArray %}
         <tr>
                 <td class="name">{{ person.firstName }} {{ person.lastName }}</td>
-                <td class="phone">{{ person.phoneNumber }}</td>
+                <td class="phone">{{ person.phoneNumber|phone_number_format('NATIONAL') }}</td>
                 <td class="actions"><a href="{{ path('person_destroy') }}" {{ delete_link(person) }}>Delete</a><a href="{{ path('person_edit', {'id':  person.id  }) }}">Edit</a></td>
         </tr>
     {% endfor %}
